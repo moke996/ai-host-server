@@ -1,0 +1,18 @@
+common:
+  httpAddress: ":10005"
+  serverName: "ai-host-dating"
+
+
+mongo:
+  address: "mongodb+srv://root:xoQ6xL1eAgc8q5OD_@stage.d4k0g.mongodb.net/wooplus?retryWrites=true"
+#  address: "mongodb://localhost:27017/wooplus?retryWrites=true"
+  maxPoolSize: 10
+
+redis:
+  address: "localhost:3306"
+  maxPoolSize: 10 # 线程池大小
+
+
+openAi:
+  secret: ""
+  url: "https://api.openai.com/v1/chat/completions"
