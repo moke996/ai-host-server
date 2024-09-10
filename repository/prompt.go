@@ -1,9 +1,8 @@
 package repository
 
 import (
-	"ai-host/constant"
-	"ai-host/global"
-	"ai-host/model"
+	"ai-dating/global"
+	"ai-dating/model"
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -26,14 +25,14 @@ type PromptInterface interface {
 
 func NewPrompt() *Prompt {
 	return &Prompt{
-		promptCollection:  global.MongoClient.Collection(constant.AiHostPrompt),
-		historyCollection: global.MongoClient.Collection(constant.AiTestHistory),
+		promptCollection:  global.MongoClient.Collection(model.AiHostPrompt),
+		historyCollection: global.MongoClient.Collection(model.AiTestHistory),
 	}
 }
 
-func (p *Prompt) GetPromptList(ctx context.Context) (map[string]*model.Prompt, error) {
+func (p *Prompt) GetPromptList(ctx context.Context, aiType string) (map[string]*model.Prompt, error) {
 	var list []*model.Prompt
-	cursor, err := p.promptCollection.Find(ctx, bson.D{{"version", bson.M{"$ne": constant.AiFunctions}}})
+	cursor, err := p.promptCollection.Find(ctx, bson.D{{"type", aiType}})
 	if err != nil {
 		return nil, err
 	}
@@ -47,18 +46,9 @@ func (p *Prompt) GetPromptList(ctx context.Context) (map[string]*model.Prompt, e
 	return result, nil
 }
 
-func (p *Prompt) GetFunction(ctx context.Context) (*model.Prompt, error) {
-	var functions model.Prompt
-	err := p.promptCollection.FindOne(ctx, bson.D{{"version", constant.AiFunctions}}).Decode(&functions)
-	if err != nil {
-		return nil, err
-	}
-	return &functions, nil
-}
-
 func (p *Prompt) GetHistoryList(ctx context.Context) ([]*model.History, error) {
 	var list []*model.History
-	projection := bson.D{{"_id", 1}, {"name", 1}}
+	projection := bson.D{{"_id", -1}, {"name", 1}, {"description", 1}}
 	// 创建查询选项
 	findOptions := options.Find().SetProjection(projection)
 	cursor, err := p.promptCollection.Find(ctx, bson.D{}, findOptions)
@@ -71,13 +61,16 @@ func (p *Prompt) GetHistoryList(ctx context.Context) ([]*model.History, error) {
 	return list, nil
 }
 
-func (p *Prompt) InsertHistory(ctx context.Context, req model.SaveRequest, content string) error {
+func (p *Prompt) InsertHistory(ctx context.Context, req model.SaveRequest, content, male, female string) error {
 	_, err := p.historyCollection.InsertOne(ctx, model.History{
-		Tag:      req.Tag,
-		Title:    req.Title,
-		Info:     req.Info,
-		Content:  content,
-		SaveTime: time.Now().UnixMilli(),
+		Tag:         req.Tag,
+		Version:     req.Version,
+		Name:        req.Title,
+		Description: req.Info,
+		Content:     content,
+		Male:        male,
+		Female:      female,
+		SaveTime:    time.Now().UnixMilli(),
 	})
 	if err != nil {
 		return err
@@ -96,7 +89,7 @@ func (p *Prompt) GetHistoryById(ctx context.Context, id primitive.ObjectID) (*mo
 
 // 插入Prompt
 func (p *Prompt) InsertPrompt(ctx context.Context, data *model.Prompt) error {
-	_, err := p.historyCollection.InsertOne(ctx, data)
+	_, err := p.promptCollection.InsertOne(ctx, data)
 	if err != nil {
 		return err
 	}

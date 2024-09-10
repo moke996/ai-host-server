@@ -1,9 +1,9 @@
 package main
 
 import (
-	"ai-host/controller"
-	"ai-host/global"
-	"ai-host/server"
+	"ai-dating/controller"
+	"ai-dating/global"
+	"ai-dating/server"
 	"time"
 )
 

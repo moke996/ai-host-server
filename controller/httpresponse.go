@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"ai-host/model"
+	"ai-dating/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

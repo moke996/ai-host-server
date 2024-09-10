@@ -1,9 +1,9 @@
 package server
 
 import (
-	"ai-host/controller"
-	"ai-host/global"
-	"ai-host/middleware"
+	"ai-dating/controller"
+	"ai-dating/global"
+	"ai-dating/middleware"
 	"github.com/gin-gonic/gin"
 )
 

@@ -1,18 +1,17 @@
 package controller
 
 import (
-	"ai-host/global"
-	"ai-host/model"
+	"ai-dating/global"
+	"ai-dating/model"
 	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"time"
 )
 
-func OpenAiReply(msg []model.OpenAIMessageType, function model.FunctionType) (map[string]string, error) {
+func OpenAiReply(msg []model.OpenAIMessageType, function model.FunctionType) (*model.AIResponse, error) {
 	requestBody := model.OpenAIRequest{
 		Model:     "gpt-4o",
 		Messages:  msg,
@@ -63,22 +62,10 @@ func OpenAiReply(msg []model.OpenAIMessageType, function model.FunctionType) (ma
 	}
 
 	assistant := response.Choices[0].Message.FunctionCall.Arguments
-	result := map[string]string{}
-	err = json.Unmarshal([]byte(assistant.(string)), &result)
+	result := &model.AIResponse{}
+	err = json.Unmarshal([]byte(assistant.(string)), result)
 	if err != nil {
 		return nil, errors.New("OpenAIReply json.Unmarshal assistant failed! body:" + assistant.(string))
 	}
 	return result, nil
-}
-
-func OpenAiWithRetry(msg []model.OpenAIMessageType, function model.FunctionType, retries int) (map[string]string, error) {
-	var err error
-	for i := 0; i < retries; i++ {
-		data, err := OpenAiReply(msg, function)
-		if err == nil {
-			return data, nil // 如果函数调用成功，直接返回
-		}
-		time.Sleep(50 * time.Millisecond) // 等待一段时间后重试
-	}
-	return nil, err // 如果所有重试都失败，返回最后一次的错误
 }

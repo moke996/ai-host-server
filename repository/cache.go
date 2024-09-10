@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"ai-host/constant"
-	"ai-host/global"
-	"ai-host/model"
+	"ai-dating/constant"
+	"ai-dating/global"
+	"ai-dating/model"
 	"context"
 	"encoding/json"
 	"errors"
@@ -28,6 +28,8 @@ type IHistory interface {
 	GetSessionHistory(ctx context.Context, tag string) ([]model.OpenAIMessageType, error)
 	// AddSessionHistory 加入会话历史
 	AddSessionHistory(ctx context.Context, tag string, msg []model.OpenAIMessageType) error
+	// AddUserSession
+	AddUserProfile(ctx context.Context, msg model.StartRequest) error
 }
 
 func (h *History) GetSessionHistory(ctx context.Context, tag string) ([]model.OpenAIMessageType, error) {
@@ -62,23 +64,36 @@ func (h *History) AddSessionHistory(ctx context.Context, tag string, msg []model
 	return nil
 }
 
-func (h *History) GetUserSession(ctx context.Context, msg model.RunRequest) (*model.RunRequest, error) {
-	key := fmt.Sprintf(constant.UserCommit, strconv.Itoa(msg.Tag))
+// Profile缓存
+func (h *History) GetUserProfile(ctx context.Context, tag int) (*model.Profile, error) {
+	key := fmt.Sprintf(constant.UserCommit, strconv.Itoa(tag))
 	date, err := h.Cache.Get(ctx, key).Result()
 	if err != nil {
 		if errors.Is(err, redis.Nil) {
-			msgJson, err := json.Marshal(msg)
-			if err != nil {
-				return nil, err
-			}
-			h.Cache.Set(ctx, key, string(msgJson), 5*time.Minute)
-			return nil, nil
+			return nil, errors.New(" GetUserProfile is nil! ")
 		}
 	}
-	var result *model.RunRequest
-	err = json.Unmarshal([]byte(date), &result)
+	var result *model.Profile
+	err = json.Unmarshal([]byte(date), result)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
+}
+
+// AddProfileCache
+func (h *History) AddUserProfile(ctx context.Context, msg model.StartRequest) error {
+	key := fmt.Sprintf(constant.UserCommit, strconv.Itoa(msg.Tag))
+	msgJson, err := json.Marshal(model.Profile{
+		Male:   msg.Male,
+		Female: msg.Female,
+	})
+	if err != nil {
+		return err
+	}
+	err = h.Cache.Set(ctx, key, string(msgJson), 30*time.Minute).Err()
+	if err != nil {
+		return err
+	}
+	return nil
 }

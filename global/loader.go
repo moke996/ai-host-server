@@ -1,7 +1,7 @@
 package global
 
 import (
-	"ai-host/model"
+	"ai-dating/model"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 )

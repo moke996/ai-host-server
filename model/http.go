@@ -13,8 +13,13 @@ type EmptyRespData struct {
 type StartRequest struct {
 	Version string `json:"version"` // 版本号，为空表示获取所有版本号
 	Tag     int    `json:"tag"`     // 每次对话的标识符
-	Male    string `json:"content"`
+	Male    string `json:"male"`
 	Female  string `json:"female"`
+}
+
+type Profile struct {
+	Male   string `json:"male"`
+	Female string `json:"female"`
 }
 
 type RunRequest struct {
@@ -24,20 +29,28 @@ type RunRequest struct {
 	NextStep string `json:"next"`
 }
 
-type SaveRequest struct {
-	Title string `json:"title"`
-	Info  string `json:"info"`
-	Tag   int    `json:"tag"` // 每次对话的标识符
+type AIResponse struct {
+	NextStep string `json:"next_step"`
+	AiAnswer string `json:"ai_answer"`
+	A        string `json:"A,omitempty"`
+	B        string `json:"B,omitempty"`
 }
 
-type HistoryRequest struct {
-	Name string `json:"name"`
+type SaveRequest struct {
+	Title   string        `json:"title"`
+	Info    string        `json:"info"`
+	Version string        `json:"version"`
+	Tag     int           `json:"tag"` // 每次对话的标识符
+	Msg     []MessageResp `json:"msg"`
+}
+
+type MessageResp struct {
+	Text   string `json:"text"`
+	Sender string `json:"sender"`
 }
 
 type HistoryResponse struct {
-	Name    string `json:"name"`
-	Version string `json:"version"` // 版本号，为空表示获取所有版本号
-	Tag     int    `json:"tag"`     // 每次对话的标识符
-	Male    string `json:"content"` //用户profile
-	Female  string `json:"female"`  // 用户profile
+	Messages []MessageResp `json:"messages"`
+	Version  string        `json:"version"`
+	Profile
 }

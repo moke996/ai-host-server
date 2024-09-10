@@ -2,8 +2,15 @@ package model
 
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
+const (
+	AiHostPrompt  = "ai_host_prompt"
+	AiTestHistory = "ai_test_history"
+	AiUserProfile = "ai_host_profile"
+)
+
 type Prompt struct {
-	Id                 primitive.ObjectID `json:"id" bson:"_id"`
+	Id                 primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
+	Type               string             `json:"type,omitempty" bson:"type"`
 	Version            string             `json:"version" bson:"version"`
 	System             string             `json:"system"`
 	Introduction       string             `json:"introduction" bson:"introduction"`
@@ -18,12 +25,15 @@ type Prompt struct {
 }
 
 type History struct {
-	Id       primitive.ObjectID `json:"id" bson:"id"`
-	Tag      int                `json:"tag,omitempty" bson:"tag"`
-	Title    string             `json:"name" bson:"name"`
-	Info     string             `json:"info" bson:"info"`
-	Content  string             `json:"content,,omitempty" bson:"content"`
-	SaveTime int64              `json:"save_time" bson:"save_time"`
+	Id          primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
+	Version     string             `json:"version" bson:"version"`
+	Male        string             `json:"male" bson:"male"`
+	Female      string             `json:"female" bson:"female"`
+	Tag         int                `json:"tag,omitempty" bson:"tag,omitempty"`
+	Name        string             `json:"name" bson:"name"`
+	Description string             `json:"description,omitempty" bson:"description,omitempty"`
+	Content     string             `json:"content,,omitempty" bson:"content"`
+	SaveTime    int64              `json:"save_time" bson:"save_time"`
 }
 
 type PromptConfig struct {

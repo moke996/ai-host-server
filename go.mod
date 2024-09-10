@@ -1,4 +1,4 @@
-module ai-host
+module ai-dating
 
 go 1.20
 

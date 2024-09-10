@@ -1,11 +1,10 @@
 common:
   httpAddress: ":10005"
-  serverName: "ai-host-dating"
+  serverName: "ai-dating"
 
 
 mongo:
-  address: "mongodb+srv://root:xoQ6xL1eAgc8q5OD_@stage.d4k0g.mongodb.net/wooplus?retryWrites=true"
-#  address: "mongodb://localhost:27017/wooplus?retryWrites=true"
+  address: "mongodb://localhost:27017/wooplus?retryWrites=true"
   maxPoolSize: 10
 
 redis:
