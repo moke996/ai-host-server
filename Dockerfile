@@ -17,4 +17,4 @@ RUN go build -o ai-host-server
 CMD ["./ai-host-server"]
 
 # 暴露端口
-EXPOSE 8080
+EXPOSE 10005
