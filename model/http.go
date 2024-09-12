@@ -30,7 +30,7 @@ type RunRequest struct {
 }
 
 type AIResponse struct {
-	NextStep string `json:"next_step"`
+	NextStep string `json:"nextstep"`
 	AiAnswer string `json:"ai_answer"`
 	A        string `json:"A,omitempty"`
 	B        string `json:"B,omitempty"`
