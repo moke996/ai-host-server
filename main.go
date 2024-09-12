@@ -14,7 +14,6 @@ func main() {
 	global.LoadConfig()
 	// 初始化依赖
 	global.Init()
-
 	// 加载数据
 	controller.InitData()
 	// 启动http服务

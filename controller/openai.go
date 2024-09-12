@@ -60,7 +60,11 @@ func OpenAiReply(msg []model.OpenAIMessageType, function model.FunctionType) (*m
 		d, _ := json.Marshal(response.Error)
 		return nil, errors.New("OpenAIReply response error! body:" + string(d))
 	}
-
+	if response.Choices[0].Message.FunctionCall.Arguments == nil {
+		ss, _ := json.Marshal(response)
+		fmt.Println("Ai-response", string(ss))
+		return nil, errors.New("OpenAIReply assistant is nil! ")
+	}
 	assistant := response.Choices[0].Message.FunctionCall.Arguments
 	result := &model.AIResponse{}
 	err = json.Unmarshal([]byte(assistant.(string)), result)

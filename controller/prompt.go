@@ -83,7 +83,7 @@ func Start(c *gin.Context) {
 	}
 	resp := &model.AIResponse{}
 	if firstReply.NextStep == constant.Introduction {
-		params := &model.RunRequest{
+		params := model.RunRequest{
 			Version:  req.Version,
 			Tag:      req.Tag,
 			Content:  "",
@@ -101,8 +101,8 @@ func Start(c *gin.Context) {
 
 // Run
 func Run(c *gin.Context) {
-	var req *model.RunRequest
-	err := c.ShouldBindJSON(req)
+	var req model.RunRequest
+	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		HttpFail(c, nil, "Start ShouldBindJSON error! "+err.Error())
 		return
@@ -290,7 +290,6 @@ func InitData() {
 			Prompt:   val.FinalRound,
 			Function: functions.FinalRound,
 		}
-		fmt.Println(Prompt)
 		Prompt[version] = params
 	}
 }
@@ -340,7 +339,7 @@ func Str2ObjectId(id string) (objId primitive.ObjectID, err error) {
 	return
 }
 
-func GetOpenAIReply(c *gin.Context, req *model.RunRequest) (*model.AIResponse, error) {
+func GetOpenAIReply(c *gin.Context, req model.RunRequest) (*model.AIResponse, error) {
 	cache := repository.NewCacheHistory()
 	// 查询本轮使用的prompt
 	prompt, err := getLatestPrompt(req.Version, req.NextStep)

@@ -4,12 +4,12 @@ common:
 
 
 mongo:
-  address: "mongodb://localhost:27017/wooplus?retryWrites=true"
-  maxPoolSize: 10
+  address: "mongodb+srv://root:xoQ6xL1eAgc8q5OD_@stage.d4k0g.mongodb.net/wooplus?retryWrites=true"
+  maxPoolSize: 2
 
 redis:
-  address: "localhost:3306"
-  maxPoolSize: 10 # 线程池大小
+  address: "localhost:6379"
+  maxPoolSize: 2 # 线程池大小
 
 
 openAi:
