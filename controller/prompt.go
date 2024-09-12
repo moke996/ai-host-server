@@ -95,6 +95,12 @@ func Start(c *gin.Context) {
 			return
 		}
 	}
+
+	err = repository.NewCacheHistory().AddUserProfile(c, req)
+	if err != nil {
+		HttpFail(c, nil, "AddUserProfile error! err: "+err.Error())
+		return
+	}
 	HttpSuccess(c, resp)
 	return
 }

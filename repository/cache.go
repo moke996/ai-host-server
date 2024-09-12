@@ -28,8 +28,10 @@ type IHistory interface {
 	GetSessionHistory(ctx context.Context, tag string) ([]model.OpenAIMessageType, error)
 	// AddSessionHistory 加入会话历史
 	AddSessionHistory(ctx context.Context, tag string, msg []model.OpenAIMessageType) error
-	// AddUserSession
+	// AddUserProfile  用户profile加入缓存
 	AddUserProfile(ctx context.Context, msg model.StartRequest) error
+	// GetUserProfile 查询用户的profile
+	GetUserProfile(ctx context.Context, tag int) (*model.Profile, error)
 }
 
 func (h *History) GetSessionHistory(ctx context.Context, tag string) ([]model.OpenAIMessageType, error) {

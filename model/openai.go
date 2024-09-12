@@ -1,9 +1,10 @@
 package model
 
 type OpenAIRequest struct {
-	Model     string              `json:"model"`
-	Messages  []OpenAIMessageType `json:"messages"`
-	Functions []FunctionType      `json:"functions"`
+	Model        string              `json:"model"`
+	Messages     []OpenAIMessageType `json:"messages"`
+	Functions    []FunctionType      `json:"functions"`
+	FunctionCall map[string]string   `json:"function_call,omitempty"`
 }
 
 type OpenAIMessageType struct {

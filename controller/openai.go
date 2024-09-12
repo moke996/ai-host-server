@@ -13,9 +13,10 @@ import (
 
 func OpenAiReply(msg []model.OpenAIMessageType, function model.FunctionType) (*model.AIResponse, error) {
 	requestBody := model.OpenAIRequest{
-		Model:     "gpt-4o",
-		Messages:  msg,
-		Functions: []model.FunctionType{function},
+		Model:        "gpt-4o",
+		Messages:     msg,
+		Functions:    []model.FunctionType{function},
+		FunctionCall: map[string]string{"name": function.Name},
 	}
 
 	// 将请求体序列化为JSON
@@ -24,7 +25,6 @@ func OpenAiReply(msg []model.OpenAIMessageType, function model.FunctionType) (*m
 		fmt.Println("请求体序列化错误:", err)
 		return nil, errors.New(" OpenAIReply json.Marshal failed! " + err.Error())
 	}
-
 	// 创建HTTP请求
 	req, err := http.NewRequest("POST", global.Config.OpenAi.Url, bytes.NewBuffer(jsonData))
 	if err != nil {
@@ -62,9 +62,12 @@ func OpenAiReply(msg []model.OpenAIMessageType, function model.FunctionType) (*m
 	}
 	if response.Choices[0].Message.FunctionCall.Arguments == nil {
 		ss, _ := json.Marshal(response)
-		fmt.Println("Ai-response", string(ss))
+		fmt.Println("Ai-Resp: ", string(ss))
 		return nil, errors.New("OpenAIReply assistant is nil! ")
 	}
+	fmt.Println("AI-Req: ", function.Name)
+	ss, _ := json.Marshal(response)
+	fmt.Println("Ai-Resp: ", string(ss))
 	assistant := response.Choices[0].Message.FunctionCall.Arguments
 	result := &model.AIResponse{}
 	err = json.Unmarshal([]byte(assistant.(string)), result)
