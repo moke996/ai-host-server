@@ -66,7 +66,7 @@ func (p *Prompt) InsertHistory(ctx context.Context, req model.SaveRequest, conte
 		Tag:         req.Tag,
 		Version:     req.Version,
 		Name:        req.Title,
-		Description: req.Info,
+		Description: req.Description,
 		Content:     content,
 		Male:        male,
 		Female:      female,

@@ -37,11 +37,11 @@ type AIResponse struct {
 }
 
 type SaveRequest struct {
-	Title   string        `json:"title"`
-	Info    string        `json:"info"`
-	Version string        `json:"version"`
-	Tag     int           `json:"tag"` // 每次对话的标识符
-	Message []MessageResp `json:"message"`
+	Title       string        `json:"title"`
+	Description string        `json:"description"`
+	Version     string        `json:"version"`
+	Tag         int           `json:"tag"` // 每次对话的标识符
+	Message     []MessageResp `json:"message"`
 }
 
 type MessageResp struct {
