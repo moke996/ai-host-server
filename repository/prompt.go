@@ -51,7 +51,7 @@ func (p *Prompt) GetHistoryList(ctx context.Context) ([]*model.History, error) {
 	projection := bson.D{{"_id", -1}, {"name", 1}, {"description", 1}}
 	// 创建查询选项
 	findOptions := options.Find().SetProjection(projection)
-	cursor, err := p.promptCollection.Find(ctx, bson.D{}, findOptions)
+	cursor, err := p.historyCollection.Find(ctx, bson.D{}, findOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +80,7 @@ func (p *Prompt) InsertHistory(ctx context.Context, req model.SaveRequest, conte
 
 func (p *Prompt) GetHistoryById(ctx context.Context, id primitive.ObjectID) (*model.History, error) {
 	var history *model.History
-	err := p.historyCollection.FindOne(ctx, bson.D{{"_id", id}}).Decode(history)
+	err := p.historyCollection.FindOne(ctx, bson.D{{"_id", id}}).Decode(&history)
 	if err != nil {
 		return nil, err
 	}
