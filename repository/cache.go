@@ -75,12 +75,12 @@ func (h *History) GetUserProfile(ctx context.Context, tag int) (*model.Profile, 
 			return nil, errors.New(" GetUserProfile is nil! ")
 		}
 	}
-	var result *model.Profile
-	err = json.Unmarshal([]byte(date), result)
+	var result model.Profile
+	err = json.Unmarshal([]byte(date), &result)
 	if err != nil {
 		return nil, err
 	}
-	return result, nil
+	return &result, nil
 }
 
 // AddProfileCache

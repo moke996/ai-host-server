@@ -32,8 +32,8 @@ type RunRequest struct {
 type AIResponse struct {
 	NextStep string `json:"nextstep"`
 	AiAnswer string `json:"ai_answer"`
-	A        string `json:"A,omitempty"`
-	B        string `json:"B,omitempty"`
+	A        string `json:"A"`
+	B        string `json:"B"`
 }
 
 type SaveRequest struct {
@@ -41,7 +41,7 @@ type SaveRequest struct {
 	Info    string        `json:"info"`
 	Version string        `json:"version"`
 	Tag     int           `json:"tag"` // 每次对话的标识符
-	Msg     []MessageResp `json:"msg"`
+	Message []MessageResp `json:"message"`
 }
 
 type MessageResp struct {

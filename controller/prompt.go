@@ -142,7 +142,7 @@ func Save(c *gin.Context) {
 		HttpFail(c, nil, "GetUserProfile error! err: "+err.Error())
 		return
 	}
-	strBytes, err := json.Marshal(req.Msg)
+	strBytes, err := json.Marshal(req.Message)
 	if err != nil {
 		HttpFail(c, nil, "Save Marshal history error! err: "+err.Error())
 		return
@@ -216,7 +216,7 @@ func OpenAIReply(c *gin.Context, msg []model.OpenAIMessageType, function model.F
 			continue
 		}
 		if data.A != "" && data.B != "" {
-			data.AiAnswer = data.AiAnswer + "\n" + data.A + "\n" + data.B
+			data.AiAnswer = data.AiAnswer + "\nA: " + data.A + "\nB: " + data.B
 			data.A = ""
 			data.B = ""
 		}
