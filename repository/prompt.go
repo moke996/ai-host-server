@@ -50,7 +50,7 @@ func (p *Prompt) GetHistoryList(ctx context.Context) ([]*model.History, error) {
 	var list []*model.History
 	projection := bson.D{{"_id", -1}, {"name", 1}, {"description", 1}}
 	// 创建查询选项
-	findOptions := options.Find().SetProjection(projection)
+	findOptions := options.Find().SetProjection(projection).SetSort(bson.M{"save_time": -1})
 	cursor, err := p.historyCollection.Find(ctx, bson.D{}, findOptions)
 	if err != nil {
 		return nil, err

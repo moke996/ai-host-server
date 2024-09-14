@@ -19,7 +19,6 @@ func CorsMiddleware() gin.HandlerFunc {
 			c.AbortWithStatus(http.StatusNoContent)
 			return
 		}
-
 		// 处理实际的请求
 		c.Next()
 	}
