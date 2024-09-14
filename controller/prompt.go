@@ -11,7 +11,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -56,8 +55,8 @@ func Start(c *gin.Context) {
 	}
 
 	// 替换profile
-	item := strings.Replace(prompt.Prompt, "{{$male}}", req.Male, 1)
-	prompt.Prompt = strings.Replace(item, "{{$female}}", req.Female, 1)
+	//item := strings.Replace(prompt.Prompt, "{{$male}}", req.Male, 1)
+	//prompt.Prompt = strings.Replace(item, "{{$female}}", req.Female, 1)
 
 	msg := []model.OpenAIMessageType{
 		{
@@ -66,7 +65,7 @@ func Start(c *gin.Context) {
 		},
 		{
 			Role:    constant.RoleUser,
-			Content: "start",
+			Content: req.Male + "\n" + req.Female,
 		},
 	}
 
