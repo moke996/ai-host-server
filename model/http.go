@@ -54,3 +54,21 @@ type HistoryResponse struct {
 	Version  string        `json:"version"`
 	Profile
 }
+
+type GetPromptReq struct {
+	Version string `json:"version"`
+	Type    string `json:"type"` // 1: prompt  2: functions
+	Tag     int    `json:"tag"`  // 每次对话的标识符
+}
+
+type ChildrenOptions struct {
+	Value string `json:"value"`
+	Label string `json:"label"`
+}
+
+type UpdatePromptReq struct {
+	Version string `json:"version"`
+	Type    string `json:"type"` // 1: prompt  2: functions
+	Tag     string `json:"tag"`  // 每次对话的标识符
+	Value   string `json:"value"`
+}

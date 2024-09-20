@@ -332,6 +332,69 @@ func DeleteHistoryById(c *gin.Context) {
 	return
 }
 
+func GetPrompt(c *gin.Context) {
+	version := c.Query("version")
+	if version == "" {
+		HttpFail(c, nil, "version is empty! ")
+		return
+	}
+	promptType := c.Query("type")
+	if promptType == "" {
+		HttpFail(c, nil, "promptType is empty! ")
+		return
+	}
+	tag := c.Query("tag")
+	if promptType == "" {
+		HttpFail(c, nil, "promptType is empty! ")
+		return
+	}
+
+	if val, ok := Prompt[version]; ok {
+		if v, ok := val[tag]; ok {
+			if promptType == "prompt" {
+				HttpSuccess(c, v.Prompt)
+				return
+			}
+			if promptType == "function" {
+				HttpSuccess(c, v.Function)
+				return
+			}
+		} else {
+			HttpFail(c, nil, "tag is not support! "+tag)
+			return
+		}
+	} else {
+		HttpFail(c, nil, "version is not support! "+version)
+		return
+	}
+	HttpFail(c, nil, "type is not support! "+tag)
+	return
+}
+
+func UpdatePrompt(c *gin.Context) {
+	var req model.UpdatePromptReq
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		HttpFail(c, nil, "Start ShouldBindJSON error! "+err.Error())
+		return
+	}
+	if val, ok := Prompt[req.Version]; ok {
+		if v, ok := val[req.Tag]; ok {
+			if req.Type == "prompt" {
+				v.Prompt = req.Value
+			}
+			if req.Type == "function" {
+				v.Function = req.Value
+			}
+			HttpSuccess(c, "")
+			return
+		} else {
+			HttpFail(c, nil, "tag is not support! "+req.Tag)
+			return
+		}
+	}
+}
+
 func Str2ObjectId(id string) (objId primitive.ObjectID, err error) {
 
 	if id == "" {

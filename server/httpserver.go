@@ -17,5 +17,7 @@ func NewHttp() {
 	r.GET("/api/v1/host/histories", controller.GetHistoryList)
 	r.GET("/api/v1/host/history/:id", controller.GetHistoryById)
 	r.POST("/api/v1/host/history/:id", controller.DeleteHistoryById)
+	r.GET("/api/v1/host/getPrompt", controller.GetPrompt)
+	r.POST("/api/v1/host/prompt/update", controller.UpdatePrompt)
 	_ = r.Run(global.Config.Common.HttpAddress)
 }
